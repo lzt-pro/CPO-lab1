@@ -1,11 +1,11 @@
-# 定义hashmap
+# define hashmap
 '''
-1. 定义hashmap的listBuckets
-2. hash映射函数
-3. 插入一个节点
-4. 删除一个节点
+1. define listBuckets of hashmap
+2. hash mapping function
+3. insert a node
+4. delete a node
 '''
-# length是hashmap 的listbuckets长度
+# length is the length of listbuckets of hashmap
 def hashFunction(node,length):
     key = node.value % length
     node.key = key
