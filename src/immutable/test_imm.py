@@ -1,8 +1,8 @@
 import unittest
 from hypothesis import given
 import hypothesis.strategies as st
-from demotable_v import *
-
+# from demotable_v import *
+from immuNode import  *
 
 class TestImmutableList(unittest.TestCase):
     def test_size(self):
@@ -79,6 +79,43 @@ class TestImmutableList(unittest.TestCase):
         self.assertEqual(to_list(lst), tmp)
         get_next = iterator(None)
         self.assertRaises(StopIteration, lambda: get_next())
+
+    def test_hash_Function(self):
+        node1=Node(10,None)
+        node2=Node(15,None)
+        self.assertEqual(hash_Function(node1,5), hash_Function(node2,5))
+
+    def test_insert_hash(self):
+        buckets = [0,1,2,3,4]
+        node1 = Node(10, None)
+        node2 = Node(15, None)
+        self.assertEqual(insert_hash(node1,buckets),insert_hash(node2,buckets))
+
+    def test_remove_hash(self):
+        buckets=[
+            Node(0,None),
+            Node(1,None),
+            Node(2,None),
+            Node(3,None),
+            Node(4,None),
+        ]
+        node1 = Node(20 , None)
+        node2 = Node(5, None)
+        node3 = Node(10, None)
+        node4 = Node(15, None)
+        buckets[0].next=node1
+        node1.next = node2
+        node2.next = node3
+        node3.next = node4
+        hash_Function(node1,len(buckets))
+        hash_Function(node2,len(buckets))
+        hash_Function(node3,len(buckets))
+        hash_Function(node4,len(buckets))
+        # for i in range(1,5):
+        #     s='node'+str(i)
+        #     hash_Function(s,len(buckets))
+        self.assertEqual(remove_hash(node1,buckets),1)
+
 
 if __name__ == '__main__':
     unittest.main()

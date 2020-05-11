@@ -6,68 +6,74 @@
 4. delete a node
 '''
 # length is the length of listbuckets of hashmap
-def hashFunction(node,length):
+def hash_Function(node,length):
     key = node.value % length
     node.key = key
     return key
-# 头插法插入hashmap当中
+# insert the node into the head of hasmap
 def insert_hash(node,buckets):
-    key = hashFunction(node,len(buckets))
+    key = hash_Function(node,len(buckets))
     node.key = key
     add_node = cons(node,buckets[key])
-    return add_node
-# 删除 hashnode
+    if add_node:
+        return 1
+    else:
+        return 0
+# remove hashnode
 def remove_hash(node,buckets):
-    key = hashFunction(node,buckets)
+    key = hash_Function(node,len(buckets))
     remove_node = remove(buckets[key],node.value)
-    return remove_node
+    if remove_node:
+        return 1
+    else:
+        return 0
 
-def size(n):
-        if n is None:
+def size(node):
+        if node is None:
             return 0
         else:
-            return 1+size(n.next)
-# 添加新元素
+            return 1+size(node.next)
+# add a new node
 def cons(head, tail):
     """add new element to head of the list"""
     return Node(head,tail)
-# 删除在list中的element值
-def remove(n,element):
-    assert n is not None,"element should be in list"
-    if n.value == element:
-        return n.next
+#  delete the value of element of the list
+def remove(node, element):
+    assert node is not None, "element should be in list"
+    if node.value == element:
+        return node.next
     else:
-        return  cons(n.value,remove(n.next,element))
-# 当前node节点的值
-def head(n):
-    assert type(n) is Node
-    return n.value
-# 获取node节点的下一个
-def tail(n):
-    assert type(n) is Node
-    return n.next
-# 链表倒置
-def reverse(n,acc=None):
-    if n is None:
+        return  cons(node.value, remove(node.next, element))
+# get the value of the node
+def head(node):
+    assert type(node) is Node
+    return node.value
+# get the next node
+def tail(node):
+    assert type(node) is Node
+    return node.next
+# reversr the linked_list
+def reverse(node, acc=None):
+    if node is None:
         return acc
-    return reverse(tail(n),Node(head(n),acc))
+    return reverse(tail(node), Node(head(node), acc))
 
 def mempty():
     return None
 
-def mconcat(a,b):
-    if a is None:
-        return b
-    tmp = reverse(a)
-    res =b
+def mconcat(node1, node2):
+    if node1 is None:
+        return node2
+    tmp = reverse(node1)
+    res =node2
     while tmp is not None:
         res = cons(tmp.value, res)
         tmp=tmp.next
     return  res
 
-def to_list(n):
+def to_list(node):
     res = []
-    cur = n
+    cur = node
     while cur is not None:
         res.append(cur.value)
         cur = cur.next
@@ -101,6 +107,20 @@ class Node(object):
             return "<Node key: %d data: %d>" % (self.key, self.value)
         else:
             return "<Node key: %s data: %d>" % (self.key, self.value)
+
+    def __str__(self):
+        """for str() implementation"""
+        if type(self.next) is Node:
+            return "{} : {}".format(self.value, self.next)
+        return str(self.value)
+
+    def __eq__(self, other):
+        """for write assertion, we should be abel for check list equality (list are equal, if all elements are equal)."""
+        if other is None:
+            return False
+        if self.value != other.value:
+            return False
+        return self.next == other.next
 
 if __name__ == '__main__':
     n1 = Node(0,None)

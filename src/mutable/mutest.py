@@ -7,10 +7,10 @@ from muHashMap import Hashmap
 
 
 class TestCaseNode(unittest.TestCase):
-    #设置测试开始前执行的指令
+    #Sets the instructions to be executed before the test begins
     def setUp(self):
         self.node = Node(7)
-    #设置测试开始后执行的指令
+    #Sets the instructions to execute after the test has started
     def tearDown(self):
         self.node = None
         del self.node
