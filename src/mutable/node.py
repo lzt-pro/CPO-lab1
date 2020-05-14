@@ -3,10 +3,11 @@ class Node(object):
     # data = data of Node (integer)
     # next = points to the next Node object in the Linked List
 
-    def __init__(self, data=None, next=None):
-        self.key = None
+    def __init__(self, key=None,data=None, next=None):
+        self.key = key
         self.data = data
         self.next = next
+
     # Computes the official String representation of Node Objects
     # Since we have not defined __str__ this is used for
     # informal string representation as well

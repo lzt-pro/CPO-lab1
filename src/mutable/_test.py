@@ -1,16 +1,17 @@
 import unittest
-from hypothesis import given
+from hypothesis import given,settings
 import hypothesis.strategies as st
-from muNode import Node
-from muLinkedList import LinkedList
-from muHashMap import Hashmap
+from node import Node
+from linkedlist import LinkedList
+from hashmap import Hashmap
 
 
 class TestCaseNode(unittest.TestCase):
-    #Sets the instructions to be executed before the test begins
+    # Sets the instructions to be executed before the test begins
     def setUp(self):
-        self.node = Node(7,None)
-    #Sets the instructions to execute after the test has started
+        self.node = Node(None,7, None)
+
+    # Sets the instructions to execute after the test has started
     def tearDown(self):
         self.node = None
         del self.node
@@ -53,44 +54,44 @@ class TestLinkedListMethods(TestCaseMuLinkedList):
 
         # List with elements returns correct length
         for i in range(20):
-            node = Node( i, None)
+            node = Node(None,i, None)
             self.linkedlist.add_to_tail(node)
         self.assertEqual(len(self.linkedlist), 20)
 
     def test_add_to_tail(self):
         # Adds element to an Empty Linked List
-        node = Node(3,None)
+        node = Node(None,3, None)
         output = self.linkedlist.add_to_tail(node)
 
         self.assertEqual(repr(output), "<Node key: None data: 3>")
 
         # Adds element to end of Linked List with items already
         for i in range(7):
-            node = Node(i,None)
+            node = Node(None,i, None)
             output = self.linkedlist.add_to_tail(node)
         self.assertEqual(repr(output), "<Node key: None data: 5>")
 
     def test_add_to_head(self):
         # Adds element to an Empty Linked List
-        node = Node(3,None)
+        node = Node(None,3, None)
         output = self.linkedlist.add_to_head(node)
 
         self.assertEqual(repr(output), "<Node key: None data: 3>")
 
         # Adds element to first of Linked List with items already
         for i in range(7):
-            node = Node(i,None)
+            node = Node(None,i, None)
             output = self.linkedlist.add_to_head(node)
         self.assertEqual(repr(output), "<Node key: None data: 6>")
 
     def test_remove(self):
         # Does not remove from an Empty Linked List
-        node = Node(10,None)
+        node = Node(None,10, None)
         outputEmpty = self.linkedlist.remove(node.data)
         self.assertEqual(outputEmpty, "Linked List is empty, value of: 10 is not here")
         # Does not Remove anything if does not exist in Linked List
         for i in range(10):
-            node = Node(i,None)
+            node = Node(None,i, None)
             self.linkedlist.add_to_head(node)
         outputNotHere = self.linkedlist.remove(11)
         self.assertEqual(outputNotHere, 'Node is not in LinkedList')
@@ -106,79 +107,106 @@ class TestLinkedListMethods(TestCaseMuLinkedList):
     def test_repr(self):
         output = repr(self.linkedlist)
         self.assertEqual(output, 'LinkedList: Nodes: []')
+
     def test_to_list(self):
         self.assertEqual(LinkedList().to_list(), [])
-        self.assertEqual(LinkedList(Node('a',None)).to_list(), ['a'])
-        self.assertEqual(LinkedList(Node('a', Node('b',None))).to_list(), ['a', 'b'])
+        self.assertEqual(LinkedList(Node(None,'a', None)).to_list(), [[None,'a']])
+        self.assertEqual(LinkedList(Node(None,'a', Node(None,'b', None))).to_list(), ([[None,'a'],[None,'b']]))
+
     def test_from_list(self):
         test_data = [
             [],
-            ['a'],
-            ['a', 'b']
+            [[None,'a']],
+            [[None,'a'], [None,'b']]
         ]
-        # for e in test_data:
-        #     lst = LinkedList()
-        #     lst.from_list(e)
-        #     self.assertEqual(lst.to_list(), [])
+
+        for e in test_data:
+            list = []
+            lst = LinkedList()
+            lst.from_list(e)
+            for i in e:
+                list.append([i[0],i[1]])
+            self.assertEqual(lst.to_list(), list)
+
+    @settings(max_examples=10)
+    @given(k=st.integers(), d=st.integers())
+    def test_from_list_to_list_equality(self, k, d):
         lst = LinkedList()
-        self.assertEqual(lst.to_list(), [])
+        v=[[k,d]]
+        lst.from_list(v)
+
+        ans = lst.to_list()
+        self.assertEqual(ans, v)
+        # lst = LinkedList()
+        # self.assertEqual(lst.to_list(), ([],[]))
+
     def test_map(self):
         lst = LinkedList()
         lst.map(str)
         self.assertEqual(lst.to_list(), [])
         lst = LinkedList()
-        lst.from_list([1, 2, 3])
+        lst.from_list([[None,1], [None,2], [None,3]])
         lst.map(str)
-        self.assertEqual(lst.to_list(), ["1", "2", "3"])
+        self.assertEqual(lst.to_list(), [[None, '1'], [None, '2'], [None, '3']])
+
     def test_reduce(self):
         # sum of empty list
         lst = LinkedList()
         self.assertEqual(lst.reduce(lambda st, e: st + e, 0), 0)
         # sum of list
         lst = LinkedList()
-        lst.from_list([1, 2, 3])
+        lst.from_list([[None,1], [None,2], [None,3]])
         self.assertEqual(lst.reduce(lambda st, e: st + e, 0), 6)
         # size
         test_data = [
             [],
-            ['a'],
-            ['a', 'b']
+            [[None, 'a']],
+            [[None, 'a'], [None, 'b']]
         ]
         for e in test_data:
             lst = LinkedList()
             lst.from_list(e)
             self.assertEqual(lst.reduce(lambda st, _: st + 1, 0), lst.size())
 
-    @given(st.lists(st.integers()))
-    def test_from_list_to_list_equality(self, a):
-        lst = LinkedList()
-        lst.from_list(a)
-        b = lst.to_list()
-        self.assertEqual(a, b)
+
 
     @given(st.lists(st.integers()))
     def test_python_len_and_list_size_equality(self, a):
         lst = LinkedList()
-
-        lst.from_list(a)
+        ans = []
+        for i in a:
+            ans.append([None, i])
+        lst.from_list(ans)
         self.assertEqual(lst.size(), len(a))
 
     def test_iter(self):
-        x = [1, 2, 3]
+        x = [[None,1], [None,2], [None,3]]
         lst = LinkedList()
+
         lst.from_list(x)
+
         tmp = []
-        for e in lst:
-            tmp.append(e)
+        e = lst.head
+        while e is not None:
+
+            tmp.append([e.key,e.data])
+            e = e.next
+
+
         self.assertEqual(x, tmp)
         self.assertEqual(lst.to_list(), tmp)
         i = iter(LinkedList())
         self.assertRaises(StopIteration, lambda: next(i))
+
+
 class TestCaseHashMap(unittest.TestCase):
     def setUp(self):
         self.hashmap = Hashmap()
+
     def tearDown(self):
         del self.hashmap
+
+
 class TestHashmapMethods(TestCaseHashMap):
     def test_init(self):
         # Test length with default length
@@ -197,7 +225,7 @@ class TestHashmapMethods(TestCaseHashMap):
 
     def test_insert(self):
         # places into correct location in Hashmap
-        node = Node(576,None)
+        node = Node(None,576, None)
         insertOutput = self.hashmap.insert(node)
         self.assertEqual(repr(insertOutput), '<Node key: 77 data: 576>')
 
@@ -208,7 +236,7 @@ class TestHashmapMethods(TestCaseHashMap):
 
         # does not remove if it is not in List at specified key
         for i in range(10):
-            node = Node(i,None)
+            node = Node(None,i, None)
             self.hashmap.insert(node)
         outputNotHere = self.hashmap.remove(505)
         self.assertEqual(outputNotHere, 'Node is not in LinkedList')
@@ -218,9 +246,9 @@ class TestHashmapMethods(TestCaseHashMap):
         self.assertEqual(outputRemove, 'Node with the value: 5 was removed from the LinkedList')
 
         # removes node from Linked List at specified key with multiple elements
-        node = Node(205,None)
+        node = Node(None,205, None)
         self.hashmap.insert(node)
-        node = Node(305,None)
+        node = Node(None,305, None)
         self.hashmap.insert(node)
         outputRemove = self.hashmap.remove(305)
         self.assertEqual(outputRemove, 'Node with the value: 305 was removed from the LinkedList')

@@ -1,4 +1,4 @@
-from muNode import Node
+from node import Node
 
 
 # A Linked List of Node Objects
@@ -6,7 +6,7 @@ class LinkedList(object):
 
     # head = pointer to the first Node in the Linked List
     # current = pointer to current Node in list, used when Traversing Linked List
-    def __init__(self,head = None):
+    def __init__(self, head=None):
         self.head = head
         self.current = None
 
@@ -22,25 +22,29 @@ class LinkedList(object):
                 self.current = self.current.next
                 length = length + 1
             return length
+
     # To_list traverses the linked list, storing the node in the list of res
     def to_list(self):
-        list_data = []
-        list_keys = []
+        list = []
+        # list_keys = []
         cur = self.head
         while cur is not None:
-            list_data.append(cur.data)
-            list_keys.append(cur.key)
+            list.append([cur.key,cur.data])
+            # list_keys.append(cur.key)
             cur = cur.next
-        return list_data
+        return list
+
     # From_list converts a list to a chain phenotype
-    def from_list(self,lst_data):
-        if len(lst_data)==0:
-            self.head=None
+    def from_list(self, nodes):
+        if len(nodes) == 0:
+            self.head = None
             return
         root = None
-        for d in reversed(lst_data):
-            root = Node(d,root)
+        for d in reversed(nodes):
+            root = Node(d[0],d[1], root)
+
         self.head = root
+
     # Find the last node in the list
     def _last_node(self):
         assert self.head is not None
@@ -48,21 +52,23 @@ class LinkedList(object):
         while self.current is not None:
             self.current = self.current.next
         return self.current
+
     # The map mapping function transforms the data value of each node into f
-    def map(self,f):
+    def map(self, f):
         self.current = self.head
         while self.current is not None:
             self.current.data = f(self.current.data)
             self.current = self.current.next
 
     # Reduce function, the value of all nodes in the linked list is executed according to f operation
-    def reduce(self,f,initial_state):
+    def reduce(self, f, initial_state):
         state = initial_state
         cur = self.head
         while cur is not None:
             state = f(state, cur.data)
             cur = cur.next
         return state
+
     # Adds a Node to the end of a Linked List
     # Returns the Node that was added
     def add_to_tail(self, node):
@@ -77,6 +83,7 @@ class LinkedList(object):
                 self.current = self.current.next
             self.current.next = node
         return self.current
+
     # Adds a Node to the fisrt of a Linked List
     # Returns the Node that was added
     def add_to_head(self, node):
@@ -107,8 +114,6 @@ class LinkedList(object):
             node = node.next
         return 'LinkedList: Nodes: %r' % nodes
 
-
-
     # Removes a Node from the Linked List with the given value
     # value = Data of the Node object you would like to remove from the Linked List
     def remove(self, value):
@@ -118,7 +123,7 @@ class LinkedList(object):
         if self.current is None:
             return 'Linked List is empty, value of: %d is not here' % value
         else:
-             while self.current != None:
+            while self.current != None:
                 if self.current.data == value:
                     # Remove the value from the Linked List
                     if len(self) is 1:
