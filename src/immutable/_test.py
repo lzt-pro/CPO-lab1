@@ -5,37 +5,48 @@ import hypothesis.strategies as st
 from imnode import *
 
 
-class TestImmutableList(unittest.TestCase):
+class TestImnode(unittest.TestCase):
     def test_size(self):
         self.assertEqual(size(None), 0)
-        self.assertEqual(size(cons('a', None)), 1)
-        self.assertEqual(size(cons('a', cons('b', None))), 2)
+        self.assertEqual(size(cons(Node(1,None,None),Node(1,'a',None))), 2)
+        # self.assertEqual(size(cons('a', cons('b', None))), 2)
 
     def test_cons(self):
-        self.assertEqual(cons('a', None), Node('a', None))
-        self.assertEqual(cons('a', cons('b', None)), Node('a', Node('b', None)))
+        self.assertEqual(cons(Node(1,None,None),Node(1,'a',None)), Node(1,None, Node(1,'a',None)))
+        #self.assertEqual(cons('a', cons('b', None)), Node('a', Node('b', None)))
 
     def test_remove(self):
-        self.assertRaises(AssertionError, lambda: remove(None, 'a'))
-        self.assertRaises(AssertionError, lambda: remove(cons('a', None), 'b'))
-        self.assertEqual(remove(cons('a', cons('a', None)), 'a'), cons('a', None))
-        self.assertEqual(remove(cons('a', cons('b', None)), 'a'), cons('b', None))
-        self.assertEqual(remove(cons('a', cons('b', None)), 'b'), cons('a', None))
+        head = Node(1,None,None)
+        head.next = Node(1,'a',None)
+        head.next.next = Node(2,'b',None)
+        self.assertEqual(remove(cons(Node(1,None,None),Node(1,'a',None)),'a'), Node(1,'a',None))
+
 
     def test_head(self):
-        self.assertRaises(AssertionError, lambda: head(None))
-        self.assertEqual(head(cons('a', None)), 'a')
+        # self.assertRaises(AssertionError, lambda: head(None))
+        self.assertEqual(head(Node(1,'a',None)), 'a')
 
     def test_tail(self):
-        self.assertRaises(AssertionError, lambda: tail(None))
-        self.assertEqual(tail(cons('a', None)), None)
-        self.assertEqual(tail(cons('a', cons('b', None))), cons('b', None))
+        # get the next node
+        #self.assertRaises(AssertionError, lambda: tail(None))
+        head = Node(1, None, None)
+        nodea = Node(1, 'a', None)
+        nodeb = Node(1, 'b', None)
+        head.next = nodea
+        nodea.next = nodeb
+        self.assertEqual(tail(nodeb), None)
+        self.assertEqual(tail(head), nodea)
 
     #
     def test_reverse(self):
+        head = Node(1, None, None)
+        nodea = Node(1, 'a', None)
+        nodeb = Node(1, 'b', None)
+        head.next = nodea
+        nodea.next = nodeb
         self.assertEqual(reverse(None), None)
-        self.assertEqual(reverse(cons('a', None)), cons('a', None))
-        self.assertEqual(reverse(cons('a', cons('b', None))), cons('b', cons('a', None)))
+        self.assertEqual(reverse(nodea), Node(1,'b',Node(1,'a',None)))
+        # self.assertEqual(reverse(cons('a', cons('b', None))), cons('b', cons('a', None)))
 
     #
     def test_mconcat(self):

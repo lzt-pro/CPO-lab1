@@ -18,7 +18,7 @@ def hash_Function(node, length):
 def insert_hash(node, buckets):
     key = hash_Function(node, len(buckets))
     node.key = key
-    add_node = cons(node, buckets[key])
+    add_node = cons(buckets[key],node)
     if add_node:
         return 1
     else:
@@ -42,19 +42,41 @@ def size(node):
         return 1 + size(node.next)
 
 
-# add a new node
-def cons(head, tail):
+# add a new node to head of the list
+def cons(head, node):
+    # Pass the header node, and the key value of the node to be added
     """add new element to head of the list"""
-    return Node(head, tail)
+    # cur = head
+    # while cur.next is not None :
+    #     cur = cur.next
+    # cur.next = Node(None,tail,None)
+    # return head
+    # node = Node(tail_key,tail_value,head.next)
+    node.next = head.next
+    head.next = node
+    return head
 
 
-#  delete the value of element of the list
-def remove(node, element):
-    assert node is not None, "element should be in list"
-    if node.value == element:
-        return node.next
-    else:
-        return cons(node.value, remove(node.next, element))
+#  delete the value of element of the list, return the node that we deleted
+def remove(head, element):
+    # node is the first node in the list, and it stand for the list
+    # assert node is not None, "element should be in list"
+    # if node.value == element:
+    #     return node.next
+    # else:
+    #     return cons(node.value, remove(node.next, element))
+    cur = head.next
+    p = head
+
+    while cur is not None:
+        if cur.value == element:
+            deleted = cur
+            p.next = cur.next
+            cur = cur.next
+        else:
+            cur =cur.next
+    return deleted
+
 
 
 # get the value of the node
@@ -69,7 +91,7 @@ def tail(node):
     return node.next
 
 
-# reversr the linked_list
+# reverse the linked_list
 def reverse(node, acc=None):
     if node is None:
         return acc
@@ -80,35 +102,56 @@ def mempty():
     return None
 
 
-def mconcat(node1, node2):
-    if node1 is None:
-        return node2
-    tmp = reverse(node1)
-    res = node2
-    while tmp is not None:
-        res = cons(tmp.value, res)
-        tmp = tmp.next
-    return res
+def mconcat(head1, head2):
+    if head1.next is None:
+        return head2
+    else:
+        cur = head1
+        while cur.next is not None:
+            cur = cur.next
+        cur.next = head2.next
+    return head1
 
 
-def to_list(node):
-    res = []
-    cur = node
+# def to_list(node):
+#     res = []
+#     cur = node
+#     while cur is not None:
+#         res.append(cur.value)
+#         cur = cur.next
+#     return res
+#
+#
+# def from_list(lst):
+#     res = None
+#     for e in reversed(lst):
+#         res = cons(e, res)
+#     return res
+
+def to_list(head):
+    list = []
+    # list_keys = []
+    cur = head.next
     while cur is not None:
-        res.append(cur.value)
+        list.append([cur.key,cur.value])
+        # list_keys.append(cur.key)
         cur = cur.next
-    return res
+    return list
 
-
-def from_list(lst):
-    res = None
-    for e in reversed(lst):
-        res = cons(e, res)
-    return res
-
+    # From_list converts a list to a chain phenotype
+def from_list(nodes):
+    head = Node(None,None,None)
+    root = None
+    if len(nodes) == 0:
+        return head
+    for d in reversed(nodes):
+        root = Node(d[0],d[1], root)
+    head.next = root
+    return head
+    # self.head = root
 
 def iterator(lst):
-    cur = lst
+    cur = lst.next
 
     def foo():
         nonlocal cur
@@ -121,9 +164,9 @@ def iterator(lst):
 
 
 class Node(object):
-    def __init__(self, value, next):
+    def __init__(self,key=None,value=None, next=None):
         """node constructor"""
-        self.key = None
+        self.key = key
         self.value = value
         self.next = next
 
@@ -136,8 +179,8 @@ class Node(object):
     def __str__(self):
         """for str() implementation"""
         if type(self.next) is Node:
-            return "{} : {}".format(self.value, self.next)
-        return str(self.value)
+            return "{}: {} : {}".format(self.key, self.value, self.next)
+        return "{} : {}".format(self.key,self.value)
 
     def __eq__(self, other):
         """for write assertion, we should be abel for check list equality (list are equal, if all elements are equal)."""
@@ -145,18 +188,20 @@ class Node(object):
             return False
         if self.value != other.value:
             return False
+        if self.key != other.key:
+            return False
         return self.next == other.next
 
 
-if __name__ == '__main__':
-    n1 = Node(0, None)
-    n2 = Node(1, None)
-    n3 = Node(2, None)
-    n4 = Node(3, None)
-    buckets = [n1, n2, n3]
-    # test = tail(n3)
-    # rev = reverse(n3, acc=None)
-    print(len(buckets))
-    # print(buckets[1].value)
-    resn4 = insert_hash(n4, buckets)
-    print(resn4.value)
+# if __name__ == '__main__':
+#     n1 = Node(0, None)
+#     n2 = Node(1, None)
+#     n3 = Node(2, None)
+#     n4 = Node(3, None)
+#     buckets = [n1, n2, n3]
+#     # test = tail(n3)
+#     # rev = reverse(n3, acc=None)
+#     print(len(buckets))
+#     # print(buckets[1].value)
+#     resn4 = insert_hash(n4, buckets)
+#     print(resn4.value)
