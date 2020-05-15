@@ -1,5 +1,5 @@
 import unittest
-from hypothesis import given
+from hypothesis import given,settings
 import hypothesis.strategies as st
 # from demotable_v import *
 from imnode import *
@@ -38,91 +38,104 @@ class TestImnode(unittest.TestCase):
         self.assertEqual(tail(head), nodea)
 
     #
-    def test_reverse(self):
+
+    #
+    def test_mconcat(self):
+        head1 = Node(1, None, None)
+        nodea = Node(1, 'a', None)
+        head2 = Node(2, None, None)
+        nodeb = Node(2, 'b', None)
+        head1.next = nodea
+        head2.next = nodeb
+        self.assertEqual(mconcat(head1,head2), Node(1,None,Node(1,'a',Node(2,'b',None))))
+
+
+
+    def test_to_list(self):
         head = Node(1, None, None)
         nodea = Node(1, 'a', None)
         nodeb = Node(1, 'b', None)
         head.next = nodea
         nodea.next = nodeb
-        self.assertEqual(reverse(None), None)
-        self.assertEqual(reverse(nodea), Node(1,'b',Node(1,'a',None)))
-        # self.assertEqual(reverse(cons('a', cons('b', None))), cons('b', cons('a', None)))
+        self.assertEqual(to_list(head), [[1,'a'],[1,'b']])
 
-    #
-    def test_mconcat(self):
-        self.assertEqual(mconcat(None, None), None)
-        self.assertEqual(mconcat(cons('a', None), None), cons('a', None))
-        self.assertEqual(mconcat(None, cons('a', None)), cons('a', None))
-        self.assertEqual(mconcat(cons('a', None), cons('b', None)), cons('a', cons('b', None)))
-
-    #
-    def test_to_list(self):
-        self.assertEqual(to_list(None), [])
-        self.assertEqual(to_list(cons('a', None)), ['a'])
-        self.assertEqual(to_list(cons('a', cons('b', None))), ['a', 'b'])
-
-    #
     def test_from_list(self):
         test_data = [
             [],
-            ['a'],
-            ['a', 'b']
+            [[None, 'a']],
+            [[None, 'a'], [None, 'b']]
         ]
+
         for e in test_data:
-            self.assertEqual(to_list(from_list(e)), e)
+            list = []
+            head = Node()
+            for i in e:
+                node = Node(i[0],i[1],None)
+                head = cons(head,node)
+                list.append([i[0],i[1]])
+            list.reverse()
+            self.assertEqual(to_list(head), list)
 
-    @given(st.lists(st.integers()))
-    def test_from_list_to_list_equality(self, a):
-        self.assertEqual(to_list(from_list(a)), a)
+    @settings(max_examples=10)
+    @given(k=st.integers(), d=st.integers())
+    def test_from_list_to_list_equality(self, k, d):
+        # head = Node()
+        v=[[k,d]]
+        head = from_list(v)
 
-    @given(st.lists(st.integers()))
-    def test_monoid_identity(self, lst):
-        a = from_list(lst)
-        self.assertEqual(mconcat(mempty(), a), a)
-        self.assertEqual(mconcat(a, mempty()), a)
+        ans = to_list(head)
+        self.assertEqual(ans, v)
+
+    @given(k=st.integers(), d=st.integers())
+    def test_monoid_identity(self, k,d):
+        node = Node(k,d,None)
+        head1 = Node()
+        head2 = Node()
+        head2.next = node
+        self.assertEqual(mconcat(head1, head2), head2)
+        self.assertEqual(mconcat(head2, head1), head2)
 
     def test_iter(self):
-        x = [1, 2, 3]
-        lst = from_list(x)
+        x = [[1,1], [2,2], [3,3]]
+        head = from_list(x)
         tmp = []
         try:
-            get_next = iterator(lst)
+            get_next = iterator(head)
             while True:
                 tmp.append(get_next())
         except StopIteration:
             pass
         self.assertEqual(x, tmp)
-        self.assertEqual(to_list(lst), tmp)
-        get_next = iterator(None)
-        self.assertRaises(StopIteration, lambda: get_next())
+        self.assertEqual(to_list(head), tmp)
+
 
     def test_hash_Function(self):
-        node1 = Node(10, None)
-        node2 = Node(15, None)
+        node1 = Node(None,10, None)
+        node2 = Node(None,15, None)
         self.assertEqual(hash_Function(node1, 5), hash_Function(node2, 5))
 
     def test_insert_hash(self):
-        buckets = [0, 1, 2, 3, 4]
-        node1 = Node(10, None)
-        node2 = Node(15, None)
+        buckets = [Node(0,None,None), Node(1,None,None), Node(2,None,None)]
+
+        node1 = Node(None,3, None)
+        node2 = Node(None,6, None)
         self.assertEqual(insert_hash(node1, buckets), insert_hash(node2, buckets))
 
     def test_remove_hash(self):
         buckets = [
-            Node(0, None),
-            Node(1, None),
-            Node(2, None),
-            Node(3, None),
-            Node(4, None),
+            Node(None,0, None),
+            Node(None,1, None),
+            Node(None,2, None),
+
         ]
-        node1 = Node(20, None)
-        node2 = Node(5, None)
-        node3 = Node(10, None)
-        node4 = Node(15, None)
-        buckets[0].next = node1
-        node1.next = node2
-        node2.next = node3
-        node3.next = node4
+        node1 = Node(None,2, None)
+        node2 = Node(None,4, None)
+        node3 = Node(None,6, None)
+        node4 = Node(None,8, None)
+        insert_hash(node1,buckets)
+        insert_hash(node2, buckets)
+        insert_hash(node3, buckets)
+        insert_hash(node4, buckets)
         hash_Function(node1, len(buckets))
         hash_Function(node2, len(buckets))
         hash_Function(node3, len(buckets))

@@ -91,11 +91,7 @@ def tail(node):
     return node.next
 
 
-# reverse the linked_list
-def reverse(node, acc=None):
-    if node is None:
-        return acc
-    return reverse(tail(node), Node(head(node), acc))
+
 
 
 def mempty():
@@ -105,6 +101,8 @@ def mempty():
 def mconcat(head1, head2):
     if head1.next is None:
         return head2
+    if head2.next is None:
+        return head1
     else:
         cur = head1
         while cur.next is not None:
@@ -113,20 +111,7 @@ def mconcat(head1, head2):
     return head1
 
 
-# def to_list(node):
-#     res = []
-#     cur = node
-#     while cur is not None:
-#         res.append(cur.value)
-#         cur = cur.next
-#     return res
-#
-#
-# def from_list(lst):
-#     res = None
-#     for e in reversed(lst):
-#         res = cons(e, res)
-#     return res
+
 
 def to_list(head):
     list = []
@@ -150,17 +135,22 @@ def from_list(nodes):
     return head
     # self.head = root
 
-def iterator(lst):
-    cur = lst.next
+def iterator(head):
+    if head is not None:
+        cur = head.next
 
-    def foo():
-        nonlocal cur
-        if cur is None: raise StopIteration
-        tmp = cur.value
-        cur = cur.next
-        return tmp
+        def foo():
+            nonlocal cur
+            if cur is None:
+                raise StopIteration
+            tmp = [cur.key, cur.value]
+            cur = cur.next
+            return tmp
 
-    return foo
+        return foo
+    else:
+        raise StopIteration
+
 
 
 class Node(object):
