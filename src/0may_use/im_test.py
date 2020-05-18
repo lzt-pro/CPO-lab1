@@ -2,7 +2,7 @@ import unittest
 from hypothesis import given,settings
 import hypothesis.strategies as st
 # from demotable_v import *
-from imnode import *
+from may_use.imnode import *
 
 
 class TestImnode(unittest.TestCase):

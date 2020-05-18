@@ -1,4 +1,4 @@
-from node import Node
+from may_use.node import Node
 
 
 # A Linked List of Node Objects

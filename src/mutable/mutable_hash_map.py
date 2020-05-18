@@ -1,4 +1,4 @@
-from linkedlist import LinkedList
+from mutable_linked_list import LinkedList
 
 
 # A Hashmap that uses LinkedLists to handle collisions (chaining)

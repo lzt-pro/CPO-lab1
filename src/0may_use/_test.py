@@ -1,9 +1,9 @@
 import unittest
 from hypothesis import given,settings
 import hypothesis.strategies as st
-from node import Node
-from linkedlist import LinkedList
-from hashmap import Hashmap
+from may_use.node import Node
+from may_use.linkedlist import LinkedList
+from may_use.hashmap import Hashmap
 
 
 class TestCaseNode(unittest.TestCase):
