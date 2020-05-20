@@ -77,8 +77,8 @@ def reverse(node, acc=None):
         return acc
     return reverse(tail(node), Node(head(node), acc))
 
-
-def mempty():
+# judge empty
+def empty():
     return None
 
 
