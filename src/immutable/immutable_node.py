@@ -9,6 +9,8 @@
 
 # length is the length of listbuckets of hashmap
 def hash_Function(node, length):
+    if(node == None):
+        return 0
     key = node.value % length
     node.key = key
     return key
@@ -34,13 +36,12 @@ def remove_hash(node, buckets):
     else:
         return 0
 
-
-def size(node):
-    if node is None:
+# get the length of list
+def list_size(list):
+    if list is None:
         return 0
     else:
-        return 1 + size(node.next)
-
+        return 1 + list_size(list.next)
 
 # add a new node
 def cons(head, tail):
@@ -155,5 +156,11 @@ if __name__ == '__main__':
     n2 = Node(1, None)
     n4 = Node(1, None)
     n3 = cons(n1, n2)
-    print(n3.next.value)
-    print(n3.value)
+    # print(n3.next.value)
+    # print(n3.value)
+    a=[1,2,3]
+    b = from_list(a)
+    print(b.next.value)
+    print(b.value)
+
+

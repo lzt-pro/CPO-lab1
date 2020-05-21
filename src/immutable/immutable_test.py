@@ -6,9 +6,9 @@ from immutable_node import *
 
 class TestImmutableList(unittest.TestCase):
     def test_size(self):
-        self.assertEqual(size(None), 0)
-        self.assertEqual(size(cons('a', None)), 1)
-        self.assertEqual(size(cons('a', cons('b', None))), 2)
+        self.assertEqual(list_size(None), 0)
+        self.assertEqual(list_size(cons('a', None)), 1)
+        self.assertEqual(list_size(cons('a', cons('b', None))), 2)
 
     def test_cons(self):
         self.assertEqual(cons('a', None), Node('a', None))
@@ -59,10 +59,16 @@ class TestImmutableList(unittest.TestCase):
 
     @given(st.lists(st.integers()))
     def test_from_list_to_list_equality(self,a):
-        b = from_list(a)
-        c = to_list(b)
-        self.assertEqual(c, a)
+        list = from_list(a)
+        b = to_list(list)
+        self.assertEqual(a, b)
 
+    @given(st.lists(st.integers()))
+    def test_monoid_identity(self, lst):
+        a = from_list(lst)
+        hash_Function(a,3)
+        self.assertEqual(mconcat(empty(), a), a)
+        self.assertEqual(mconcat(a, empty()), a)
 
     def test_iter(self):
         x = [1, 2, 3]
