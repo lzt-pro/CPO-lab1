@@ -12,7 +12,7 @@ class LinkedList(object):
 
     # Returns amount of Node objects in the Linked List
     def size(self):
-        length = 0
+        length = 1
         if self.head is None:
             return length
         else:
@@ -24,22 +24,29 @@ class LinkedList(object):
             return length
     # To_list traverses the linked list, storing the node in the list of res
     def to_list(self):
-        list_data = []
-        list_keys = []
+        # 将链表转换为两个list，一个为key,一个为
+        list = []
         cur = self.head
+        if cur is not None and cur.data != 'head':
+            list.append([None,'head'])
         while cur is not None:
-            list_data.append(cur.data)
-            list_keys.append(cur.key)
+            list.append([cur.key,cur.data])
+
             cur = cur.next
-        return list_data
+        return list
     # From_list converts a list to a chain phenotype
-    def from_list(self,lst_data):
-        if len(lst_data)==0:
+    def from_list(self,lst):
+        # 后插法，返回的head节点为（None,None,node1)
+        if len(lst)==0:
             self.head=None
             return
-        root = None
-        for d in reversed(lst_data):
-            root = Node(d,root)
+        root = Node('head',None)
+        cur = root
+        for d in lst:
+            node = Node(d[1],None)
+            node.key = d[0]
+            cur.next = node
+            cur = cur.next
         self.head = root
     # Find the last node in the list
     def _last_node(self):
@@ -60,8 +67,12 @@ class LinkedList(object):
         state = initial_state
         cur = self.head
         while cur is not None:
-            state = f(state, cur.data)
-            cur = cur.next
+            if cur.data is 'head':
+                cur = cur.next
+            else:
+                state = f(state, cur.data)
+                cur = cur.next
+
         return state
     # Adds a Node to the end of a Linked List
     # Returns the Node that was added
