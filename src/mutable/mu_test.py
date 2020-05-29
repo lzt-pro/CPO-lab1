@@ -243,16 +243,6 @@ class TestHashmapMethods(TestCaseHashMap):
 
         hashmap = Hashmap()
         hashmap.from_list(test_data)
-        # buckets = []
-        # for i in range(5):
-        #     head = Node(None,None)
-        #     head.key = i
-        #     buckets.append(LinkedList(head))
-        # for lst in test_data:
-        #     linked = LinkedList()
-        #     linked.from_list(lst)
-        #     key = lst[0][0]
-        #     buckets[key] = linked
         self.assertEqual(repr(hashmap), "<Hashmap [LinkedList: Nodes: ['<Node key: None data: head>', '<Node key: 0 data: 5>', '<Node key: 0 data: 10>'],"
                                   " LinkedList: Nodes: ['<Node key: None data: head>', '<Node key: 1 data: 6>', '<Node key: 1 data: 11>'], "
                                   "LinkedList: Nodes: ['<Node key: None data: head>', '<Node key: 2 data: 7>', '<Node key: 2 data: 12>'], "
@@ -271,5 +261,8 @@ class TestHashmapMethods(TestCaseHashMap):
         hashmap = Hashmap()
         hashmap.from_list(test_data)
         self.assertEqual(hashmap.to_list(), test_data)
+
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -15,17 +15,11 @@ def hash_Function(node, length):
     node.key = key
     return key
 
-
 # insert the node into the head of hasmap
 def insert_hash(node, buckets):
     key = hash_Function(node, len(buckets))
     node.key = key
-    add_node = cons(node, buckets[key])
-    if add_node:
-        return 1
-    else:
-        return 0
-
+    return  append_node(buckets[key],node)
 
 # remove hashnode
 def remove_hash(node, buckets):
@@ -36,7 +30,7 @@ def remove_hash(node, buckets):
     else:
         return 0
 
-# get the length of list
+# get the length of list and the item of list is node
 def list_size(list):
     if list is None:
         return 0
@@ -49,6 +43,18 @@ def cons(head, tail):
     # tail.next=head.next
     # head.next=tail
     return Node(head, tail)
+# another method for add new element to  the list
+def append_node(lst,nod):
+    if lst==None:
+        lst=nod
+        return  lst
+    cur= lst
+    cur1 =lst.next
+    if cur1!=None:
+        cur=cur1
+        cur1=cur1.next
+    cur.next=nod
+    return lst
 
 
 #  delete the value of element of the list
@@ -78,11 +84,11 @@ def reverse(node, acc=None):
         return acc
     return reverse(tail(node), Node(head(node), acc))
 
-# judge empty
+# return a empty object
 def empty():
     return None
 
-
+#concat node1 and node2
 def mconcat(node1, node2):
     if node1 is None:
         return node2
@@ -102,24 +108,20 @@ def to_list(node):
         cur = cur.next
     return res
 
-
 def from_list(lst):
     res = None
-    for e in reversed(lst):
-        res = cons(e, res)
+    for e in lst:
+        res = append_node(res, Node(e,None))
     return res
-
 
 def iterator(lst):
     cur = lst
-
     def foo():
         nonlocal cur
         if cur is None: raise StopIteration
         tmp = cur.value
         cur = cur.next
         return tmp
-
     return foo
 
 
@@ -154,13 +156,7 @@ class Node(object):
 if __name__ == '__main__':
     n1 = Node(0, None)
     n2 = Node(1, None)
-    n4 = Node(1, None)
-    n3 = cons(n1, n2)
-    # print(n3.next.value)
-    # print(n3.value)
-    a=[1,2,3]
-    b = from_list(a)
-    print(b.next.value)
-    print(b.value)
+    n1=cons(n1,n2)
+    print(n1.next)
 
 

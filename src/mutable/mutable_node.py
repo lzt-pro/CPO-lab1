@@ -1,7 +1,4 @@
 class Node(object):
-    # key = index in the Hashmap
-    # data = data of Node (integer)
-    # next = points to the next Node object in the Linked List
 
     def __init__(self, data=None, next=None):
         self.key = None
@@ -14,4 +11,4 @@ class Node(object):
         if self.key != None:
             return "<Node key: %d data: %d>" % (self.key, self.data)
         else:
-            return "<Node key: %s data: %d>" % (self.key, self.data)
+            return "<Node key: %s data: %s>" % (self.key, self.data)

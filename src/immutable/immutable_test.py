@@ -5,6 +5,45 @@ from immutable_node import *
 
 
 class TestImmutableList(unittest.TestCase):
+    def test_hash_Function(self):
+        node1 = Node(10, None)
+        node2 = Node(15, None)
+        self.assertEqual(hash_Function(node1, 5), hash_Function(node2, 5))
+
+    def test_insert_hash(self):
+        buckets = [
+            Node(0, None),
+            Node(1, None),
+            Node(2, None),
+            Node(3, None),
+            Node(4, None),
+        ]
+        node1 = Node(10, None)
+        node2 = Node(15, None)
+        self.assertEqual(insert_hash(node1, buckets), insert_hash(node2, buckets))
+
+    def test_remove_hash(self):
+        buckets = [
+            Node(0, None),
+            Node(1, None),
+            Node(2, None),
+            Node(3, None),
+            Node(4, None),
+        ]
+        node1 = Node(20, None)
+        node2 = Node(5, None)
+        node3 = Node(10, None)
+        node4 = Node(15, None)
+        buckets[0].next = node1
+        node1.next = node2
+        node2.next = node3
+        node3.next = node4
+        hash_Function(node1, len(buckets))
+        hash_Function(node2, len(buckets))
+        hash_Function(node3, len(buckets))
+        hash_Function(node4, len(buckets))
+        self.assertEqual(remove_hash(node1, buckets), 1)
+
     def test_size(self):
         self.assertEqual(list_size(None), 0)
         self.assertEqual(list_size(cons('a', None)), 1)
@@ -13,6 +52,10 @@ class TestImmutableList(unittest.TestCase):
     def test_cons(self):
         self.assertEqual(cons('a', None), Node('a', None))
         self.assertEqual(cons('a', cons('b', None)), Node('a', Node('b', None)))
+
+    def test_append_node(self):
+        n1=Node(1,Node(2,None))
+        self.assertEqual(n1, append_node(Node(1, None), Node(2, None)))
 
     def test_remove(self):
         self.assertRaises(AssertionError, lambda: remove(None, 'a'))
@@ -48,27 +91,47 @@ class TestImmutableList(unittest.TestCase):
         self.assertEqual(to_list(cons('a', None)), ['a'])
         self.assertEqual(to_list(cons('a', cons('b', None))), ['a', 'b'])
 
-    def test_from_list(self):
-        test_data = [
-            [],
-            ['a'],
-            ['a', 'b']
-        ]
-        for e in test_data:
-            self.assertEqual(to_list(from_list(e)), e)
 
-    @given(st.lists(st.integers()))
-    def test_from_list_to_list_equality(self,a):
-        list = from_list(a)
-        b = to_list(list)
+    def test_from_list(self):
+        test_data= [[3, 6, 9],
+                    [4, 7, 10],
+                    [5, 8, 11]]
+        buckets1 = [
+            Node(0, None),
+            Node(1, None),
+            Node(2, None),
+        ]
+        n1=Node(3,Node(6,Node(9,None)))
+        n2 = Node(4, Node(7, Node(10, None)))
+        n3 = Node(5, Node(8, Node(11, None)))
+        buckets2 = [
+            Node(0, n1),
+            Node(1, n2),
+            Node(2, n3),
+        ]
+
+        # self.assertEqual(buckets2, buckets1)
+
+    # @given(st.lists(st.integers()))
+    def test_from_list_to_list_equality(self):
+        a=[0,0,0,0,0]
+        lst = from_list(a)
+        b = to_list(lst)
+        print(lst)
         self.assertEqual(a, b)
 
     @given(st.lists(st.integers()))
     def test_monoid_identity(self, lst):
         a = from_list(lst)
-        hash_Function(a,3)
+        b=[1,2,3]
+        list=from_list(b)
+        n1=Node(1,None)
+        n2=Node(2,None)
+        n3=Node(3,None)
         self.assertEqual(mconcat(empty(), a), a)
         self.assertEqual(mconcat(a, empty()), a)
+        self.assertEqual(mconcat(mconcat(n1, n2), n3), list)
+        self.assertEqual(mconcat(n1, mconcat(n2, n3)), list)
 
     def test_iter(self):
         x = [1, 2, 3]
@@ -85,38 +148,6 @@ class TestImmutableList(unittest.TestCase):
         get_next = iterator(None)
         self.assertRaises(StopIteration, lambda: get_next())
 
-    def test_hash_Function(self):
-        node1 = Node(10, None)
-        node2 = Node(15, None)
-        self.assertEqual(hash_Function(node1, 5), hash_Function(node2, 5))
-
-    def test_insert_hash(self):
-        buckets = [0, 1, 2, 3, 4]
-        node1 = Node(10, None)
-        node2 = Node(15, None)
-        self.assertEqual(insert_hash(node1, buckets), insert_hash(node2, buckets))
-
-    def test_remove_hash(self):
-        buckets = [
-            Node(0, None),
-            Node(1, None),
-            Node(2, None),
-            Node(3, None),
-            Node(4, None),
-        ]
-        node1 = Node(20, None)
-        node2 = Node(5, None)
-        node3 = Node(10, None)
-        node4 = Node(15, None)
-        buckets[0].next = node1
-        node1.next = node2
-        node2.next = node3
-        node3.next = node4
-        hash_Function(node1, len(buckets))
-        hash_Function(node2, len(buckets))
-        hash_Function(node3, len(buckets))
-        hash_Function(node4, len(buckets))
-        self.assertEqual(remove_hash(node1, buckets), 1)
 
 
 if __name__ == '__main__':

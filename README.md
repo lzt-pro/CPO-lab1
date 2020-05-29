@@ -32,9 +32,17 @@ work of ShuoCui:
 
 
 
-##  work demonstration 
+##  descriptions of  modules
 
+immutable_node: In  this module we define the immutable node to implement  linked list hash map,also there are some methods to construct list and realize the main function for it and hash,just like insert,remove for hash and list.
 
+immutable_test: in this module we define the test method for the function in the immutable_node;
+
+mutable_node: define the class Node;
+
+mutable_Linked_List: define the class LinkedList and its method,properties;
+
+mutable_hash_map: in this module, 
 
 
 
