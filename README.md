@@ -3,8 +3,10 @@ Computational Process Organization lab1
 ## title: hash-map
 Hash-map (collision resolution: separate chaining, for array and bucket you can use built-in list) based set.
 ## list of group members
-Zhentao Liu 
-Shuo Cui
+- Zhentao Liu 
+  - ID: 192050212
+  - Email : lztkystu@163.com
+- Shuo Cui
 
 ## laboratory work number: 4
 ## variant description
@@ -36,13 +38,120 @@ work of ShuoCui:
 
 immutable_node: In  this module we define the immutable node to implement  linked list hash map,also there are some methods to construct list and realize the main function for it and hash,just like insert,remove for hash and list.
 
-immutable_test: in this module we define the test method for the function in the immutable_node;
+### immutable_test
 
-mutable_node: define the class Node;
+in this module we define the test method for the function in the immutable_node;
 
-mutable_Linked_List: define the class LinkedList and its method,properties;
+### mutable
 
-mutable_hash_map: in this module, 
+In the mutable.py, We have design three classes, Node, LinkedList and Hashmap, the simple desciption as following :
+
+```python
+class Node(object):
+
+    def __init__(self, data=None, next=None):
+        self.key = None
+        self.data = data
+        self.next = next
+ class LinkedList(object):
+    def __init__(self, head=None):
+        self.head = head
+        self.current = None
+ class Hashmap(object):
+
+    def __init__(self, length=5):
+        listBuckets = []
+        for i in range(length):
+            head = Node(None, None)
+            head.key = i
+            listBuckets.append(LinkedList(head))
+        self.buckets = listBuckets
+        self.length = length
+```
+
+**Class Node:** 
+
+- I have designed key, data and next. Key as the hashmap key,  the value is stored in the data field, and next node in next field.
+
+**Class LinkedList:** 
+
+- In the Class LinkedList, I designed 9 functions for developing hashmap. 
+
+- size : Returns the length of the current linkedlist. 
+
+- to_list: Convert linkedlist to list
+
+- from_list: Convert list to linkedlist
+
+- _last_node: return the last node in linkedlist.
+
+- hash_map: Map the data value according to the function passed in
+
+- hash_reduce: Reduce each value in the linkedlist
+
+- add_to_tail: Add a node to the tail of linkedlist.
+
+- add_to_head: Add a node to the head of linkedlist
+
+- remove: Delete the node where data is a specific field
+
+**Class Hashmap:** 
+
+- In the Class LinkedList, I designed 5 functions.
+
+- to_list: Convert buckets in hashmap to list
+
+- from_list: Convert list to buckets 
+
+- hashFunction: Mapping the data to key,  as the primary step for collision resolution
+
+- insert: Add a node to hashmap 
+
+- remove: Delete the node where data is s pecific field 
+- data_find_node: Look up the node based on the data
+- filter_key: Look up the linkedlist by key
+- mempty: Set up the hashmap buckets empty list
+- mconcat: Adds node to the buckets of the hashmap
+
+```
+# 1. add a new element
+def add_to_tail(self, node）
+def add_to_head(self, node)
+# 2. remove an element
+def remove(self, value) 
+def remove(self, data) 
+# 3. size
+def size(self) 
+
+# 4. conversion from and to python lists
+def to_list(self)  
+def from_list(self, lst) 
+def to_list(self) 
+def from_list(self, list)
+
+# 5. ﬁnd element by speciﬁc predicate
+def data_find_node(self,data) 
+
+# 6. ﬁlter data structure by speciﬁc predicate
+def filter_key(self,key) 
+
+# 7. map structure by speciﬁc function
+def hash_map(self, str) 
+
+# 8. reduce – process structure elements to build a return value by speciﬁc functions
+def hash_reduce(self, f:lambda st, e: st + e, 0, initial_state) 
+
+# 9. mempty and mconcat
+def mempty(self)
+def mconcat(self)
+# 10. iterator
+def __iter__(self) 
+def __next__(self) 
+```
+
+
+
+
 
 
 

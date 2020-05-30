@@ -109,19 +109,19 @@ class TestLinkedListMethods(TestCaseMuLinkedList):
 
     def test_map(self):
         lst = LinkedList()
-        lst.map(str)
+        lst.hash_map(str)
         self.assertEqual(lst.to_list(), [])
         lst = LinkedList()
         lst.from_list([[1, 1], [2, 2], [3, 3]])
-        lst.map(str)
+        lst.hash_map(str)
         self.assertEqual(lst.to_list(), [[None, 'head'], [1, '1'], [2, '2'], [3, '3']])
 
     def test_reduce(self):
         lst = LinkedList()
-        self.assertEqual(lst.reduce(lambda st, e: st + e, 0), 0)
+        self.assertEqual(lst.hash_reduce(lambda st, e: st + e, 0), 0)
         lst = LinkedList()
         lst.from_list([[1, 1], [2, 2], [3, 3]])
-        self.assertEqual(lst.reduce(lambda st, e: st + e, 0), 6)
+        self.assertEqual(lst.hash_reduce(lambda st, e: st + e, 0), 6)
 
     @given(k=st.integers(), v=st.integers())
     def test_from_list_to_list_equality(self, k, v):
@@ -165,6 +165,7 @@ class TestCaseHashMap(unittest.TestCase):
 
 
 class TestHashmapMethods(TestCaseHashMap):
+
     def test_init(self):
         self.assertEqual(self.hashmap.length, 5)
         del self.hashmap
@@ -227,6 +228,44 @@ class TestHashmapMethods(TestCaseHashMap):
         hashmap = Hashmap()
         hashmap.from_list(test_data)
         self.assertEqual(hashmap.to_list(), test_data)
+
+    def test_data_find_node(self):
+        test_data = [[[0, 5], [0, 10]],
+                     [[1, 6], [1, 11]],
+                     [[2, 7], [2, 12]],
+                     [[3, 8], [3, 13]],
+                     [[4, 9], [4, 14]]]
+
+        hashmap = Hashmap()
+        hashmap.from_list(test_data)
+        node = hashmap.data_find_node(10)
+        self.assertEqual(repr(node), '<Node key: 0 data: 10>')
+
+    def test_filter_key(self):
+        test_data = [[[0, 5], [0, 10]],
+                     [[1, 6], [1, 11]],
+                     [[2, 7], [2, 12]],
+                     [[3, 8], [3, 13]],
+                     [[4, 9], [4, 14]]]
+
+        hashmap = Hashmap()
+        hashmap.from_list(test_data)
+        linked = hashmap.filter_key(0)
+        self.assertEqual(repr(linked),
+                         "LinkedList: Nodes: ['<Node key: None data: head>', '<Node key: 0 data: 5>', '<Node key: 0 data: 10>']")
+
+    def test_mempty(self):
+        self.assertEqual(Hashmap().mempty(), [])
+
+    def test_mconcat(self):
+        node = Node(5, None)
+        node.key = 0
+        self.assertEqual(repr(Hashmap().mconcat(node)),
+                         "[LinkedList: Nodes: ['<Node key: 0 data: None>', '<Node key: 0 data: 5>'], "
+                         "LinkedList: Nodes: ['<Node key: 1 data: None>'], "
+                         "LinkedList: Nodes: ['<Node key: 2 data: None>'], "
+                         "LinkedList: Nodes: ['<Node key: 3 data: None>'], "
+                         "LinkedList: Nodes: ['<Node key: 4 data: None>']]")
 
 
 if __name__ == '__main__':
