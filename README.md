@@ -40,60 +40,79 @@ immutable_node: In  this module we define the immutable node to implement  linke
 
 ### immutable
 
+in the module immutable_test.py , we test the all method in  immutable_node.py.
+
 In the immutable_node.py, We have design three classes, Node and use the node to implement  linked_list,hashmap,the simple desciption as following :
 
+```python
 #the node has the properties value,next and key;
+
 class Node(object):
     def __init__(self, value, next):
         """node constructor"""
         self.key = None
         self.value = value
         self.next = next
+```
 
 
 
-
-
+```python
 # get the length of list and the item of list is node
+
 def list_size(list):
 
-
 # add a new node to the hail of liked_list
+
 def append_node(lst,nod):
 
+# delete the value of element of the list
 
-
-#  delete the value of element of the list
 def remove(node, element):
 
 # get the value of the node
+
 def head(node):
 
 # get the next node
+
 def tail(node):
 
 # reverse the linked_list
+
 def reverse(node, acc=None):
 
 #concat node1 and node2
 def mconcat(node1, node2):
 
 # change the linked_list to list[]
+
 def to_list(node):
 
 # give the inserting node a key
+
 def hash_Function(node, length):
 
 # insert the node into the head of hasmap
+
 def insert_hash(node, buckets):
 
 # remove hashnode
+
 def remove_hash(node, buckets):
 
 # change the Built-in list to hashmap
+
 def from_hashmap(bukets, testdat:
 
-in the module immutable_test.py , we test the all method in  immutable_node.py.
+
+```
+
+
+
+
+
+
 
 ### mutable
 
@@ -166,7 +185,7 @@ class Node(object):
 - mempty: Set up the hashmap buckets empty list
 - mconcat: Adds node to the buckets of the hashmap
 
-```
+```python
 # 1. add a new element
 def add_to_tail(self, node）
 def add_to_head(self, node)
