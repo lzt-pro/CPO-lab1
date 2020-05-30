@@ -7,7 +7,7 @@
 '''
 
 
-# give the inserting node a key
+# give the inserting  node a key
 def hash_Function(node, length):
     if(node == None):
         return 0

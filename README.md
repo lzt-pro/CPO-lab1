@@ -4,9 +4,16 @@ Computational Process Organization lab1
 Hash-map (collision resolution: separate chaining, for array and bucket you can use built-in list) based set.
 ## list of group members
 - Zhentao Liu 
+  
   - ID: 192050212
   - Email : lztkystu@163.com
+  
 - Shuo Cui
+ 
+  -  ID: 192050212
+  - Email:13652027261@163.com
+
+  
 
 ## laboratory work number: 4
 ## variant description
@@ -52,8 +59,9 @@ immutable_node: In  this module we define the immutable node to implement  linke
   the node has the properties value,next and key;
 
 - def list_size(list): get the length of list and the item of list is node
-
 - def append_node(lst,nod): add a new node to the hail of linked_list
+- def list_size(list):get the length of list and the item of list is node
+- def append_node(lst,nod):add a new node to the hail of liked_list
 
 - def remove(node, element): delete the value of element of the list
 
@@ -77,7 +85,7 @@ immutable_node: In  this module we define the immutable node to implement  linke
 
 - def hasmap_to_list(buket): change hasmap to list[]
 
-```python
+```
 #1 get the length of list and the item of list is node
 def list_size(list):
 
@@ -143,7 +151,7 @@ def from_hashmap(bukets, testdata):
 
 In the mutable.py, We have design three classes, Node, LinkedList and Hashmap, the simple desciption as following :
 
-```python
+```
 class Node(object):
 
     def __init__(self, data=None, next=None):
