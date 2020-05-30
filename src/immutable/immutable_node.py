@@ -7,7 +7,7 @@
 '''
 
 
-# length is the length of listbuckets of hashmap
+# give the inserting node a key
 def hash_Function(node, length):
     if(node == None):
         return 0
@@ -19,7 +19,7 @@ def hash_Function(node, length):
 def insert_hash(node, buckets):
     key = hash_Function(node, len(buckets))
     node.key = key
-    return  append_node(buckets[key],node)
+    return  append_node(buckets[key], node)
 
 # remove hashnode
 def remove_hash(node, buckets):
@@ -37,24 +37,23 @@ def list_size(list):
     else:
         return 1 + list_size(list.next)
 
-# add a new node
+# add a new node to the head of liked_list
 def cons(head, tail):
-    """add new element to head of the list"""
-    # tail.next=head.next
-    # head.next=tail
     return Node(head, tail)
-# another method for add new element to  the list
+
+# add a new node to the hail of liked_list
 def append_node(lst,nod):
     if lst==None:
         lst=nod
         return  lst
-    cur= lst
-    cur1 =lst.next
-    if cur1!=None:
-        cur=cur1
-        cur1=cur1.next
-    cur.next=nod
-    return lst
+    else:
+        cur= lst
+        cur1 =lst.next
+        while cur1 is not None:
+            cur=cur1
+            cur1=cur.next
+        cur.next=nod
+        return lst
 
 
 #  delete the value of element of the list
@@ -99,7 +98,7 @@ def mconcat(node1, node2):
         tmp = tmp.next
     return res
 
-
+# change the linked_list to list[]
 def to_list(node):
     res = []
     cur = node
@@ -108,11 +107,19 @@ def to_list(node):
         cur = cur.next
     return res
 
+# change list[] to the linked_list
 def from_list(lst):
     res = None
     for e in lst:
         res = append_node(res, Node(e,None))
     return res
+
+# change the Built-in list to hashmap
+def from_hashmap(bukets, testdata):
+    for s in testdata:
+        for t in s:
+            insert_hash(Node(t,None), bukets)
+    return bukets
 
 def iterator(lst):
     cur = lst
@@ -155,8 +162,13 @@ class Node(object):
 
 if __name__ == '__main__':
     n1 = Node(0, None)
-    n2 = Node(1, None)
-    n1=cons(n1,n2)
-    print(n1.next)
+    n2 = Node(2, None)
+    lst1=[0,1,2,3,4]
+    res = None
+    for e in lst1:
+        res = append_node(res, Node(e, None))
+        print(res)
+
+
 
 

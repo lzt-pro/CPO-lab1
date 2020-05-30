@@ -91,8 +91,18 @@ class TestImmutableList(unittest.TestCase):
         self.assertEqual(to_list(cons('a', None)), ['a'])
         self.assertEqual(to_list(cons('a', cons('b', None))), ['a', 'b'])
 
-
     def test_from_list(self):
+        test_data = [[3, 6, 9],
+                     [4, 7, 10],
+                     [5, 8, 11]]
+        n0 = Node(3, Node(6, Node(9, None)))
+        n1 = Node(4, Node(7, Node(10, None)))
+        n2 = Node(5, Node(8, Node(11, None)))
+        self.assertEqual(n0,from_list(test_data[0]))
+        self.assertEqual(n1,from_list(test_data[1]))
+        self.assertEqual(n2,from_list(test_data[2]))
+
+    def test_from_hashmap(self):
         test_data= [[3, 6, 9],
                     [4, 7, 10],
                     [5, 8, 11]]
@@ -101,23 +111,33 @@ class TestImmutableList(unittest.TestCase):
             Node(1, None),
             Node(2, None),
         ]
-        n1=Node(3,Node(6,Node(9,None)))
+        n1 = Node(3, Node(6, Node(9, None)))
+        cur1 = n1
+        while cur1 is not None:
+            cur1.key=0
+            cur1=cur1.next
         n2 = Node(4, Node(7, Node(10, None)))
+        cur2 = n2
+        while cur2 is not None:
+            cur2.key = 1
+            cur2 = cur2.next
         n3 = Node(5, Node(8, Node(11, None)))
+        cur3 = n3
+        while cur3 is not None:
+            cur3.key = 3
+            cur3 = cur3.next
         buckets2 = [
             Node(0, n1),
             Node(1, n2),
             Node(2, n3),
         ]
+        buckets1 = from_hashmap(buckets1, test_data)
+        self.assertEqual(buckets1, buckets2)
 
-        # self.assertEqual(buckets2, buckets1)
-
-    # @given(st.lists(st.integers()))
-    def test_from_list_to_list_equality(self):
-        a=[0,0,0,0,0]
+    @given(st.lists(st.integers()))
+    def test_from_list_to_list_equality(self,a):
         lst = from_list(a)
         b = to_list(lst)
-        print(lst)
         self.assertEqual(a, b)
 
     @given(st.lists(st.integers()))
