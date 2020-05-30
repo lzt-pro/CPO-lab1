@@ -107,6 +107,15 @@ def to_list(node):
         cur = cur.next
     return res
 
+# change hasmap to list[]
+def hasmap_to_list(buket):
+    res=[]
+    for s in buket:
+        cur = s.next
+        lst = to_list(cur)
+        res.append(lst)
+    return res
+
 # change list[] to the linked_list
 def from_list(lst):
     res = None
@@ -120,6 +129,7 @@ def from_hashmap(bukets, testdata):
         for t in s:
             insert_hash(Node(t,None), bukets)
     return bukets
+
 
 def iterator(lst):
     cur = lst
@@ -163,11 +173,29 @@ class Node(object):
 if __name__ == '__main__':
     n1 = Node(0, None)
     n2 = Node(2, None)
-    lst1=[0,1,2,3,4]
-    res = None
-    for e in lst1:
-        res = append_node(res, Node(e, None))
-        print(res)
+    n1 = Node(3, Node(6, Node(9, None)))
+    cur1 = n1
+    while cur1 is not None:
+        cur1.key = 0
+        cur1 = cur1.next
+    n2 = Node(4, Node(7, Node(10, None)))
+    cur2 = n2
+    while cur2 is not None:
+        cur2.key = 1
+        cur2 = cur2.next
+    n3 = Node(5, Node(8, Node(11, None)))
+    cur3 = n3
+    while cur3 is not None:
+        cur3.key = 3
+        cur3 = cur3.next
+    buckets2 = [
+        Node(0, n1),
+        Node(1, n2),
+        Node(2, n3),
+    ]
+    res=hasmap_to_list(buckets2)
+    print(res)
+
 
 
 
