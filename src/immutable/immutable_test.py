@@ -180,7 +180,7 @@ class TestImmutableList(unittest.TestCase):
     @given(st.lists(st.integers()))
     def test_monoid_identity(self, lst):
         a = from_list(lst)
-        b=[1,2, 3]
+        b=[1, 2, 3]
         list=from_list(b)
         n1=Node(1,None)
         n2=Node(2,None)
