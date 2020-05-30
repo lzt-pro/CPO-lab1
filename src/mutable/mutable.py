@@ -1,5 +1,4 @@
 
-
 class Node(object):
 
     def __init__(self, data=None, next=None):
@@ -144,3 +143,50 @@ class LinkedList(object):
         tmp = self.head.data
         self.head = self.head.next
         return tmp
+
+# A Hashmap that uses LinkedLists to handle collisions (chaining)
+class Hashmap(object):
+
+    def __init__(self, length=5):
+        listBuckets = []
+        for i in range(length):
+            head = Node(None, None)
+            head.key = i
+            listBuckets.append(LinkedList(head))
+        self.buckets = listBuckets
+        self.length = length
+
+    def to_list(self):
+        list = []
+        for i in range(self.length):
+            linked = self.buckets[i]
+            res = linked.to_list()
+            del res[0]
+            list.append(res)
+        return list
+
+    def from_list(self, list):
+
+        for lst in list:
+            linked = LinkedList()
+            linked.from_list(lst)
+            key = lst[0][0]
+            self.buckets[key] = linked
+
+    def hashFunction(self, data):
+        key = data % self.length
+        return key
+
+    def insert(self, node):
+        key = self.hashFunction(node.data)
+        node.key = key
+        pushOutput = self.buckets[key].add_to_tail(node)
+        return pushOutput
+
+    def remove(self, data):
+        key = self.hashFunction(data)
+        removedOutput = self.buckets[key].remove(data)
+        return removedOutput
+
+    def __repr__(self):
+        return '<Hashmap %r>' % self.buckets
