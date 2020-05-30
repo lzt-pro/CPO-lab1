@@ -51,17 +51,11 @@ class Node(object):
         self.next = next
 
 
-
-
-
 # get the length of list and the item of list is node
 def list_size(list):
 
-
 # add a new node to the hail of liked_list
-def append_node(lst,nod):
-
-
+def append_node(lst,nod): 吧
 
 #  delete the value of element of the list
 def remove(node, element):
