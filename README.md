@@ -4,9 +4,16 @@ Computational Process Organization lab1
 Hash-map (collision resolution: separate chaining, for array and bucket you can use built-in list) based set.
 ## list of group members
 - Zhentao Liu 
+  
   - ID: 192050212
   - Email : lztkystu@163.com
+  
 - Shuo Cui
+
+  -  ID: 192050212
+  - Email:13652027261@163.com
+
+  
 
 ## laboratory work number: 4
 ## variant description
@@ -40,66 +47,111 @@ immutable_node: In  this module we define the immutable node to implement  linke
 
 ### immutable
 
-In the immutable_node.py, We have design three classes, Node and use the node to implement  linked_list,hashmap,the simple desciption as following :
+###### In the immutable_node.py, We have design three classes, Node and use the node to implement  linked_list,hashmap,the simple desciption as following :
 
-#the node has the properties value,next and key;
-class Node(object):
-    def __init__(self, value, next):
-        """node constructor"""
-        self.key = None
-        self.value = value
-        self.next = next
+- class Node(object):
+      def __init__(self, value, next):
+          """node constructor"""
+          self.key = None
+          self.value = value
+          self.next = next
 
+  the node has the properties value,next and key;
 
+- def list_size(list): get the length of list and the item of list is node
+- def append_node(lst,nod): add a new node to the hail of linked_list
+- def list_size(list):get the length of list and the item of list is node
+- def append_node(lst,nod):add a new node to the hail of liked_list
 
+- def remove(node, element): delete the value of element of the list
 
+- def head(node): get the value of the node
 
-# get the length of list and the item of list is node
+- def tail(node): get the next node
+
+- def reverse(node, acc=None): reverse the linked_list
+
+- def mconcat(node1, node2): concat node1 and node2
+
+- def to_list(node): change the linked_list to list[]
+
+- def hash_Function(node, length): give the inserting node a key
+
+- def insert_hash(node, buckets): insert the node into the head of hasmap
+
+- def remove_hash(node, buckets):remove hashnode
+
+- def from_hashmap(bukets, testdat: change the Built-in list to hashmap
+
+- def hasmap_to_list(buket): change hasmap to list[]
+
+```
+#1 get the length of list and the item of list is node
 def list_size(list):
 
-
-# add a new node to the hail of liked_list
+#2 add a new node to the head of liked_list
+def cons(head, tail):
+   
+#3 add a new node to the hail of liked_list
 def append_node(lst,nod):
 
-
-
-#  delete the value of element of the list
+#4 delete the value of element of the list
 def remove(node, element):
-
-# get the value of the node
+    
+#5 get the value of the node
 def head(node):
 
-# get the next node
+#6 get the next node
 def tail(node):
-
-# reverse the linked_list
+    
+#7 reverse the linked_list
 def reverse(node, acc=None):
+  
+#8 return a empty object
+def empty():
 
-#concat node1 and node2
-def mconcat(node1, node2):
+#9 concat node1 and node2
+def mconcat(node1, node2):   
 
-# change the linked_list to list[]
-def to_list(node):
+#10 iterator
+def iterator(lst):
 
-# give the inserting node a key
+#11 change list[] to the linked_list
+def from_list(lst):    
+    
+#12 change the linked_list to list[]
+def to_list(node):      
+    
+#13 give the inserting node a key
 def hash_Function(node, length):
 
-# insert the node into the head of hasmap
+#14 insert the node into the head of hasmap
 def insert_hash(node, buckets):
 
-# remove hashnode
+
+#15 remove hashnode
 def remove_hash(node, buckets):
 
-# change the Built-in list to hashmap
-def from_hashmap(bukets, testdat:
+#16 change hasmap to list[]
+def hasmap_to_list(buket):
 
-in the module immutable_test.py , we test the all method in  immutable_node.py.
+#17 change the list to hashmap
+def from_hashmap(bukets, testdata):
+
+```
+
+
+
+
+###### in the module immutable_test.py , we test the all method in  immutable_node.py.
+
+
 
 ### mutable
 
 In the mutable.py, We have design three classes, Node, LinkedList and Hashmap, the simple desciption as following :
 
-```python
+```
 class Node(object):
 
     def __init__(self, data=None, next=None):
