@@ -81,7 +81,7 @@ class LinkedList(object):
             return length
 
     # 4. conversion from and to python lists
-    def to_list(self):
+    def linkedlist_to_list(self):
         list = []
         cur = self.head
         if cur is not None and cur.data != 'head':
@@ -92,7 +92,7 @@ class LinkedList(object):
             cur = cur.next
         return list
 
-    def from_list(self, lst):
+    def linkedlist_from_list(self, lst):
         if len(lst) == 0:
             self.head = None
             return
@@ -181,20 +181,20 @@ class Hashmap(object):
         return removedOutput
 
     # 4. conversion from and to python lists
-    def to_list(self):
+    def hashmap_to_list(self):
         list = []
         for i in range(self.length):
             linked = self.buckets[i]
-            res = linked.to_list()
+            res = linked.linkedlist_to_list()
             del res[0]
             list.append(res)
         return list
 
-    def from_list(self, list):
+    def hashmap_from_list(self, list):
 
         for lst in list:
             linked = LinkedList()
-            linked.from_list(lst)
+            linked.linkedlist_from_list(lst)
             key = lst[0][0]
             self.buckets[key] = linked
 
