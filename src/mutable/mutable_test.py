@@ -255,18 +255,45 @@ class TestHashmapMethods(TestCaseHashMap):
                          "LinkedList: Nodes: ['<Node key: None data: head>', '<Node key: 0 data: 5>', '<Node key: 0 data: 10>']")
 
     def test_mempty(self):
-        self.assertEqual(Hashmap().mempty(), [])
+        self.assertEqual(repr(Hashmap().mempty()),
+                         "[LinkedList: Nodes: ['<Node key: 0 data: None>'], "
+                        "LinkedList: Nodes: ['<Node key: 1 data: None>'], "
+                        "LinkedList: Nodes: ['<Node key: 2 data: None>'], "
+                        "LinkedList: Nodes: ['<Node key: 3 data: None>'], "
+                        "LinkedList: Nodes: ['<Node key: 4 data: None>']]")
 
     def test_mconcat(self):
-        node = Node(5, None)
-        node.key = 0
-        self.assertEqual(repr(Hashmap().mconcat(node)),
-                         "[LinkedList: Nodes: ['<Node key: 0 data: None>', '<Node key: 0 data: 5>'], "
+        node1 = Node(5, None)
+        node2 = Node(10,None)
+        self.assertEqual(repr(Hashmap().mconcat(node1,node2)),
+                         "[LinkedList: Nodes: ['<Node key: 0 data: None>', '<Node key: 0 data: 5>', '<Node key: 0 data: 10>'], "
                          "LinkedList: Nodes: ['<Node key: 1 data: None>'], "
                          "LinkedList: Nodes: ['<Node key: 2 data: None>'], "
                          "LinkedList: Nodes: ['<Node key: 3 data: None>'], "
                          "LinkedList: Nodes: ['<Node key: 4 data: None>']]")
 
+    @given(l1=st.integers(), l2=st.integers(),l3=st.integers())
+    def test_monoid_identity(self, l1,l2,l3):
+        hashmap = Hashmap()
+        hashmap2 = Hashmap()
+
+        hashmap2.insert(Node(l1,None))
+        self.assertEqual(repr(hashmap.mconcat(Node(l1,None),None)), repr(hashmap2.buckets))
+        hashmap.remove(l1)
+        self.assertEqual(repr(hashmap.mconcat(None,Node(l1,None))), repr(hashmap2.buckets))
+        hashmap.remove(l1)
+
+        hashmap2.insert(Node(l2,None))
+        hashmap2.insert(Node(l3, None))
+        hashmap.mconcat(Node(l1,None),Node(l2,None))
+        hashmap.mconcat(Node(l3, None),None)
+        self.assertEqual(repr(hashmap.buckets), repr(hashmap2.buckets))
+
+        hashmap3 = Hashmap()
+        hashmap3.mconcat(Node(l1,None),None)
+        hashmap3.mconcat(Node(l2,None),Node(l3,None))
+
+        self.assertEqual(repr(hashmap3.buckets), repr(hashmap2.buckets))
 
 if __name__ == '__main__':
     unittest.main()

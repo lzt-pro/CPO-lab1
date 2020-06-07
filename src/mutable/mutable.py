@@ -50,7 +50,7 @@ class LinkedList(object):
         previous = None
         self.current = self.head
         if self.current is None:
-            return 'Linked List is empty, value of: %d is not here' % value
+            return 'Linked List is empty, value of: %s is not here' % value
         else:
             while self.current != None:
                 if self.current.data == value:
@@ -61,7 +61,7 @@ class LinkedList(object):
                     else:
                         previous.next = self.current.next
                         self.current = None
-                    return 'Node with the value: %d was removed from the LinkedList' % value
+                    return 'Node with the value: %s was removed from the LinkedList' % value
                 else:
                     previous = self.current
                     self.current = self.current.next
@@ -218,13 +218,26 @@ class Hashmap(object):
 
     # 9. mempty and mconcat
     def mempty(self):
-        self.buckets = []
+        ReBuckets  = []
+        for i in range(self.length):
+            head = Node(None, None)
+            head.key = i
+            ReBuckets.append(LinkedList(head))
+        self.buckets = ReBuckets
+
         return self.buckets
 
-    def mconcat(self, node):
-        key = node.data % self.length
-        self.buckets[key].add_to_tail(node)
+    def mconcat(self, node1,node2):
+        if node1 is not None:
+            key1 = node1.data % self.length
+            node1.key = key1
+            self.buckets[key1].add_to_tail(node1)
+        if node2 is not None:
+            key2 = node2.data % self.length
+            node2.key = key2
+            self.buckets[key2].add_to_tail(node2)
+
         return self.buckets
 
     def __repr__(self):
-        return '<Hashmap %r>' % self.buckets
+        return '<Hashmap %s>' % self.buckets
