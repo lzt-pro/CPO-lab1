@@ -54,7 +54,7 @@ class TestImmutableList(unittest.TestCase):
         self.assertEqual(cons('a', cons('b', None)), Node('a', Node('b', None)))
 
     def test_append_node(self):
-        n1=Node(1,Node(2,None))
+        n1 = Node(1, Node(2, None))
         self.assertEqual(n1, append_node(Node(1, None), Node(2, None)))
 
     def test_remove(self):
@@ -73,12 +73,10 @@ class TestImmutableList(unittest.TestCase):
         self.assertEqual(tail(cons('a', None)), None)
         self.assertEqual(tail(cons('a', cons('b', None))), cons('b', None))
 
-
     def test_reverse(self):
         self.assertEqual(reverse(None), None)
         self.assertEqual(reverse(cons('a', None)), cons('a', None))
         self.assertEqual(reverse(cons('a', cons('b', None))), cons('b', cons('a', None)))
-
 
     def test_mconcat(self):
         self.assertEqual(mconcat(None, None), None)
@@ -98,14 +96,14 @@ class TestImmutableList(unittest.TestCase):
         n0 = Node(3, Node(6, Node(9, None)))
         n1 = Node(4, Node(7, Node(10, None)))
         n2 = Node(5, Node(8, Node(11, None)))
-        self.assertEqual(n0,from_list(test_data[0]))
-        self.assertEqual(n1,from_list(test_data[1]))
-        self.assertEqual(n2,from_list(test_data[2]))
+        self.assertEqual(n0, from_list(test_data[0]))
+        self.assertEqual(n1, from_list(test_data[1]))
+        self.assertEqual(n2, from_list(test_data[2]))
 
     def test_from_hashmap(self):
-        test_data= [[3, 6, 9],
-                    [4, 7, 10],
-                    [5, 8, 11]]
+        test_data = [[3, 6, 9],
+                     [4, 7, 10],
+                     [5, 8, 11]]
         buckets1 = [
             Node(0, None),
             Node(1, None),
@@ -114,8 +112,8 @@ class TestImmutableList(unittest.TestCase):
         n1 = Node(3, Node(6, Node(9, None)))
         cur1 = n1
         while cur1 is not None:
-            cur1.key=0
-            cur1=cur1.next
+            cur1.key = 0
+            cur1 = cur1.next
         n2 = Node(4, Node(7, Node(10, None)))
         cur2 = n2
         while cur2 is not None:
@@ -158,10 +156,10 @@ class TestImmutableList(unittest.TestCase):
         test_data = [[3, 6, 9],
                      [4, 7, 10],
                      [5, 8, 11]]
-        self.assertEqual(hasmap_to_list(buckets2),test_data)
+        self.assertEqual(hasmap_to_list(buckets2), test_data)
 
     @given(st.lists(st.integers()))
-    def test_from_list_to_list_equality(self,a):
+    def test_from_list_to_list_equality(self, a):
         lst = from_list(a)
         b = to_list(lst)
         self.assertEqual(a, b)
@@ -175,20 +173,26 @@ class TestImmutableList(unittest.TestCase):
             Node(1, None),
             Node(2, None),
         ]
-        self.assertEqual(hasmap_to_list(from_hashmap(buckets1,test_data)), test_data)
+        self.assertEqual(hasmap_to_list(from_hashmap(buckets1, test_data)), test_data)
 
     @given(st.lists(st.integers()))
     def test_monoid_identity(self, lst):
         a = from_list(lst)
-        b=[1, 2, 3]
-        list=from_list(b)
-        n1=Node(1,None)
-        n2=Node(2,None)
-        n3=Node(3,None)
+        # 0+a=a
         self.assertEqual(mconcat(empty(), a), a)
+        # a+0=a
         self.assertEqual(mconcat(a, empty()), a)
-        self.assertEqual(mconcat(mconcat(n1, n2), n3), list)
-        self.assertEqual(mconcat(n1, mconcat(n2, n3)), list)
+
+    @given(a=st.lists(st.integers(), min_size=10), b=st.lists(st.integers()), c=st.lists(st.integers()))
+    def test_monoid_associativity(self, a, b, c):
+        lst1 = from_list(a)
+        lst2 = from_list(b)
+        lst3 = from_list(c)
+        # (a+b)+c
+        x = mconcat(mconcat(lst1, lst2), lst3)
+        # a+(b+c)
+        y = mconcat(lst1, mconcat(lst2, lst3))
+        self.assertEqual(x, y)
 
     def test_iter(self):
         x = [1, 2, 3]
@@ -204,7 +208,6 @@ class TestImmutableList(unittest.TestCase):
         self.assertEqual(to_list(lst), tmp)
         get_next = iterator(None)
         self.assertRaises(StopIteration, lambda: get_next())
-
 
 
 if __name__ == '__main__':
